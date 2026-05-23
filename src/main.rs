@@ -20,7 +20,7 @@ fn main() {
         let tag_nodes = TagParser::new(tokens).parse();
         // println!("{:#?}", tag_nodes);
         let nodes = NodeParser::new(tag_nodes).parse();
-        println!("{:#?}", nodes);
+        // println!("{:#?}", nodes);
     } else {
         println!("file not found");
     }
