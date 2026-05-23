@@ -1,10 +1,11 @@
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Token {
     OpenAngle,  // <
     CloseAngle, // >
     Slash,      // /
-    Equal,      // =
+    Equals,     // =
     Identifier(String),
     String(String),
     Text(String),
+    WhiteSpace,
 }

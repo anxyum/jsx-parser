@@ -45,26 +45,24 @@ impl Lexer {
     }
 
     pub fn next_token(&mut self) -> Option<Token> {
-        self.skip_whitespace();
-
         let c = self.advance()?;
 
         match c {
-            '<' => {
+            '<' if !self.inside_tag => {
                 self.inside_tag = true;
                 Some(Token::OpenAngle)
             }
 
-            '>' => {
+            '>' if self.inside_tag => {
                 self.inside_tag = false;
                 Some(Token::CloseAngle)
             }
 
-            '/' => Some(Token::Slash),
+            '/' if self.inside_tag => Some(Token::Slash),
 
-            '=' => Some(Token::Equal),
+            '=' if self.inside_tag => Some(Token::Equals),
 
-            '"' => {
+            '"' if self.inside_tag => {
                 let s = self.read_while(|c| c != '"');
                 self.advance(); // consume closing "
                 Some(Token::String(s))
@@ -76,13 +74,16 @@ impl Lexer {
                 Some(Token::Identifier(ident))
             }
 
-            c => {
-                let mut text = c.to_string();
-                text.push_str(&self.read_while(|c| c != '<'));
-                Some(Token::Text(text))
+            c if c.is_whitespace() => {
+                self.skip_whitespace();
+                Some(Token::WhiteSpace)
             }
 
-            _ => None,
+            c => {
+                let mut text = c.to_string();
+                text.push_str(&self.read_while(|c| c != '<' && !c.is_whitespace()));
+                Some(Token::Text(text))
+            }
         }
     }
 
