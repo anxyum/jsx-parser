@@ -1,19 +1,19 @@
 use crate::lexer::Token;
 use crate::parser::TokenStream;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum PropertyValue {
     String(String),
     Bool(bool),
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Property {
     pub name: String,
     pub value: PropertyValue,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum TagNode {
     OpenTag {
         name: String,

@@ -2,7 +2,7 @@ mod lexer;
 mod parser;
 
 use lexer::Lexer;
-use parser::TagParser;
+use parser::{NodeParser, TagParser};
 
 const PROJECT_FOLDER: &str = "./playground/";
 
@@ -16,9 +16,11 @@ fn main() {
 
     if let Ok(input) = input {
         let tokens = Lexer::new(&input).tokenize();
-        println!("{:#?}", tokens);
+        // println!("{:#?}", tokens);
         let tag_nodes = TagParser::new(tokens).parse();
-        println!("{:#?}", tag_nodes);
+        // println!("{:#?}", tag_nodes);
+        let nodes = NodeParser::new(tag_nodes).parse();
+        println!("{:#?}", nodes);
     } else {
         println!("file not found");
     }
